@@ -41,16 +41,24 @@ int main(void) {
     sortear_bombas(mbombas);
 
     do {
-        int tentc = 0;
+        int valido = 0;
         plot_board(mbombas, mpedras, mboard);
 
         do { // pergunta a jogada do jogador
-            if (tentc > 0) printf("\nERRO: Escolha apenas coordenadas validas.\n");
+            valido = 1;
             printf("\nEscolha um bloco (l, c):  ");
             scanf("%d %d", &jogada[0], &jogada[1]);
-            // TO DO: nao deixar jogador escolher pedra ja sumida
-            tentc++;
-        } while(jogada[0] > LIN || jogada[0] < 0 || jogada[1] > COL || jogada[1] < 0);
+
+            // aceitar apenas posicoes validas
+            if(mpedras[jogada[0]][jogada[1]] == 0) {
+                printf("\n\033[1;35;40mERRO: Posicao ja escolhida!!\033[m\n");
+                valido = 0;
+            }
+            if (jogada[0] > LIN || jogada[0] < 0 || jogada[1] > COL || jogada[1] < 0) {
+                printf("\n\033[1;35;40mERRO: Escolha apenas coordenadas validas.\033[m\n");
+                valido = 0;
+            }
+        } while(!valido);
 
         modo = jogar(jogada, mbombas, mpedras);
         
